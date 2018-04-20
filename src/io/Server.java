@@ -40,6 +40,7 @@ public class Server {
                 }
                 outputStream.close();
                 inputStream.close();
+                socket.close();
                 System.out.println("接收完毕...");
                 System.out.println();
             }
