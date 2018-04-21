@@ -9,12 +9,17 @@ public class Server {
 
     public static void main(String[] args){
         try {
-            System.out.println("请输入要接收文件的根路径,例如: F:\\receive\\");
+            System.out.println("1、请输入要接收文件的根路径,例如: F:\\receive\\");
             Scanner scanner = new Scanner(System.in);
-            String rootPath = scanner.next();
+            String rootPath = scanner.nextLine();
+            System.out.println("2、请输入监听的端口,如不输入则使用默认的10015端口");
+            String port = scanner.nextLine();
+            if(port.equals("")){
+                port = "10015";
+            }
             scanner.close();
-            ServerSocket serverSocket = new ServerSocket(10015);
-            System.out.println("服务已经建立，等待客户端的连接...");
+            ServerSocket serverSocket = new ServerSocket(Integer.parseInt(port));
+            System.out.println("服务已经建立，等待客户端的连接,端口号为: " + port);
             while (true){
                 Socket socket = serverSocket.accept();
                 DataInputStream inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
