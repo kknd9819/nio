@@ -79,7 +79,7 @@ public class Client {
         int i;
         byte[] buf = new byte[8192];
         System.out.println("当前文件: " + file.getAbsolutePath());
-        System.out.println("总长度: " + file.length());
+        System.out.println("长度: " + file.length());
         outputStream.writeUTF(file.getAbsolutePath());
         outputStream.writeLong(file.length());
         long over = 0;
@@ -87,7 +87,7 @@ public class Client {
             outputStream.write(buf,0,i);
             outputStream.flush();
             over += i;
-            System.out.print("\r剩余长度: " + (file.length() - over));
+            System.out.print("\r进度: " + over);
         }
         outputStream.close();
         inputStream.close();

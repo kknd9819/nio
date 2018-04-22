@@ -26,7 +26,7 @@ public class Server {
                 String absolutePath = inputStream.readUTF();
                 long len = inputStream.readLong();
                 System.out.println("接收文件: " + absolutePath + "....");
-                System.out.println("该文件长度为: " + len);
+                System.out.println("长度: " + len);
                 String fileName = absolutePath.substring(3,absolutePath.length());
                 if(fileName.lastIndexOf("\\") != -1){
                     String prefix = fileName.substring(0,fileName.lastIndexOf("\\")) + "\\";
@@ -38,10 +38,13 @@ public class Server {
                 File file = new File(rootPath + fileName);
                 BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
                 int i;
+                long over = 0;
                 byte[] buf = new byte[8192];
                 while((i=inputStream.read(buf,0,buf.length)) != -1){
                     outputStream.write(buf,0,i);
                     outputStream.flush();
+                    over += i;
+                    System.out.print("\r进度: " + over);
                 }
                 outputStream.close();
                 inputStream.close();
