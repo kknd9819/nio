@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class Client {
 
     private static long count = 0;
-    private static long total = 0;
 
     public static void main(String[] args){
         try {
@@ -30,7 +29,7 @@ public class Client {
                 for(File f : files){
                     calcFilesCount(f);
                 }
-                total = count;
+                System.out.println("总数： " + count + "个");;
                 System.out.println("-------------------------------------------");
                 for(File f : files){
                     getAllFile(f,ip,Integer.parseInt(port));
@@ -94,7 +93,6 @@ public class Client {
         inputStream.close();
         socket.close();
         System.out.println();
-        System.out.println("总数: " + total + "个");
         System.out.println("剩余:" +  --count + "个");
         System.out.println("-------------------------------------------");
     }
