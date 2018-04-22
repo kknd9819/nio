@@ -6,6 +6,9 @@ import java.util.Scanner;
 
 public class Client {
 
+    private static long count = 0;
+    private static long total = 0;
+
     public static void main(String[] args){
         try {
             System.out.println("说明: 本程序可以直接拷贝整个文件夹或整个盘符到指定服务器,并保留原路径规则,但是格式必须输入正确!");
@@ -24,7 +27,11 @@ public class Client {
                 File file = new File(next);
                 File[] files = file.listFiles();
                 assert files != null;
-                System.out.println("文件数量:" +  files.length);
+                for(File f : files){
+                    calcFilesCount(f);
+                }
+                total = count;
+                System.out.println("-------------------------------------------");
                 for(File f : files){
                     getAllFile(f,ip,Integer.parseInt(port));
                 }
@@ -50,6 +57,21 @@ public class Client {
         }
     }
 
+    private static void calcFilesCount(File file){
+        if(file == null)
+            return ;
+        if(file.isDirectory()){
+            File[] files = file.listFiles();
+            if(files != null){
+                for(File f : files) {
+                    calcFilesCount(f);
+                }
+            }
+        } else {
+             count++;
+        }
+    }
+
     private static void copyFile(File file,String ip,int port) throws IOException {
 
         Socket socket = new Socket(ip,port);
@@ -57,18 +79,23 @@ public class Client {
         DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         int i;
         byte[] buf = new byte[8192];
-        System.out.println("文件长度: " + file.length());
-        System.out.println("正在传输: " + file.getAbsolutePath());
+        System.out.println("当前文件: " + file.getAbsolutePath());
+        System.out.println("总长度: " + file.length());
         outputStream.writeUTF(file.getAbsolutePath());
         outputStream.writeLong(file.length());
+        long over = 0;
         while((i=inputStream.read(buf,0,buf.length)) != -1){
             outputStream.write(buf,0,i);
             outputStream.flush();
+            over += i;
+            System.out.print("\r剩余长度: " + (file.length() - over));
         }
         outputStream.close();
         inputStream.close();
         socket.close();
-        System.out.println("传输完毕...");
         System.out.println();
+        System.out.println("总数: " + total + "个");
+        System.out.println("剩余:" +  --count + "个");
+        System.out.println("-------------------------------------------");
     }
 }
