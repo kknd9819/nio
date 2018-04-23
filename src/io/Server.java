@@ -25,6 +25,8 @@ public class Server {
                 DataInputStream inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                 String absolutePath = inputStream.readUTF();
                 long len = inputStream.readLong();
+                long residue = inputStream.readLong();
+                System.out.println("剩余文件数量: " + residue);
                 System.out.println("接收文件: " + absolutePath + "....");
                 System.out.println("长度: " + len);
                 String fileName = absolutePath.substring(3,absolutePath.length());

@@ -82,6 +82,7 @@ public class Client {
         System.out.println("长度: " + file.length());
         outputStream.writeUTF(file.getAbsolutePath());
         outputStream.writeLong(file.length());
+        outputStream.writeLong(count);
         long over = 0;
         while((i=inputStream.read(buf,0,buf.length)) != -1){
             outputStream.write(buf,0,i);
